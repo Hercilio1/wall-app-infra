@@ -12,19 +12,24 @@ services:
       - ./nginx:/etc/nginx/conf.d
       - ./certbot/www:/var/www/certbot/:ro
       - ./certbot/conf/:/etc/nginx/ssl/:ro
+      - wall-app-api_static_volume:/var/www/static
     networks:
-      - wall_app_api_network
-      - wall_app_network
+      - wall-app-api_shared_network
+      # - wall_app_network
 
-  certbot:
-    image: certbot/certbot
-    volumes:
-      - ./certbot/www/:/var/www/certbot/:rw
-      - ./certbot/conf/:/etc/letsencrypt/:rw
-    command: certonly --webroot -w /var/www/certbot --force-renewal --email $WALL_APP_EMAIL -d $WALL_APP_DOMAIN -d $WALL_APP_API_DOMAIN --agree-tos
+  # certbot:
+  #   image: certbot/certbot
+  #   volumes:
+  #     - ./certbot/www/:/var/www/certbot/:rw
+  #     - ./certbot/conf/:/etc/letsencrypt/:rw
+  #   command: certonly --webroot -w /var/www/certbot --force-renewal --email $WALL_APP_EMAIL -d $WALL_APP_DOMAIN -d $WALL_APP_API_DOMAIN --agree-tos
+
+volumes:
+  wall-app-api_static_volume:
+    external: true
 
 networks:
-  wall_app_api_network:
+  wall-app-api_shared_network:
     external: true
-  wall_app_network:
-    external: true
+  # wall_app_network:
+  #   external: true

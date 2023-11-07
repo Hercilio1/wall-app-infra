@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+  nginx:
+    restart: always
+    image: nginx:latest
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+      - ./certbot/www:/var/www/certbot/:ro
+      - ./certbot/conf/:/etc/nginx/ssl/:ro
+    depends_on:
+      - web
+    networks:
+      - wall_app_infra_network
+      - wall_app_network
+
+  certbot:
+    image: certbot/certbot
+    volumes:
+      - ./certbot/www/:/var/www/certbot/:rw
+      - ./certbot/conf/:/etc/letsencrypt/:rw
+    command: certonly --webroot -w /var/www/certbot --force-renewal --email $WALL_APP_EMAIL -d $WALL_APP_DOMAIN -d $WALL_APP_API_DOMAIN --agree-tos
+
+networks:
+  wall_app_api_network:
+    external: true
+  wall_app_network:
+    external: true

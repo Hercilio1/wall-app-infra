@@ -15,7 +15,7 @@ services:
       - wall-app-api_static_volume:/var/www/static
     networks:
       - wall-app-api_shared_network
-      # - wall_app_network
+      - wall-app_shared_network
 
   # certbot:
   #   image: certbot/certbot
@@ -31,5 +31,5 @@ volumes:
 networks:
   wall-app-api_shared_network:
     external: true
-  # wall_app_network:
-  #   external: true
+  wall-app_shared_network:
+    external: true

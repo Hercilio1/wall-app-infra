@@ -28,6 +28,8 @@ services:
 volumes:
   wall-app-api_static_volume:
     external: true
+  wall-app_next_export:
+    external: true
 
 networks:
   wall-app-api_shared_network:

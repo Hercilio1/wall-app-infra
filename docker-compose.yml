@@ -8,6 +8,7 @@ services:
     ports:
       - "80:80"
       - "443:443"
+    user: nginx
     volumes:
       - ./nginx:/etc/nginx/conf.d
       - ./nginx-variables/template.conf:/etc/nginx/templates/10-variables.conf.template:ro
@@ -24,9 +25,10 @@ services:
     volumes:
       - ./certbot/www/:/var/www/certbot/:rw
       - ./certbot/conf/:/etc/letsencrypt/:rw
+      - ./certbot-helper/
     depends_on:
       - nginx
-    command: certonly --webroot -w /var/www/certbot --force-renewal --email $WALL_APP_EMAIL -d $WALL_APP_DOMAIN -d $WALL_APP_API_DOMAIN --agree-tos
+    command: certonly --webroot -w /var/www/certbot --force-renewal --email $WALL_APP_EMAIL -d $WALL_APP_API_DOMAIN,$WALL_APP_DOMAIN --agree-tos --deploy-hook ./certbot-helper/set-permissions.sh
 
 volumes:
   wall-app-api_static_volume:

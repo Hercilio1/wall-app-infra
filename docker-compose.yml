@@ -18,12 +18,12 @@ services:
       - wall-app-api_shared_network
       - wall-app_shared_network
 
-  # certbot:
-  #   image: certbot/certbot
-  #   volumes:
-  #     - ./certbot/www/:/var/www/certbot/:rw
-  #     - ./certbot/conf/:/etc/letsencrypt/:rw
-  #   command: certonly --webroot -w /var/www/certbot --force-renewal --email $WALL_APP_EMAIL -d $WALL_APP_DOMAIN -d $WALL_APP_API_DOMAIN --agree-tos
+  certbot:
+    image: certbot/certbot
+    volumes:
+      - ./certbot/www/:/var/www/certbot/:rw
+      - ./certbot/conf/:/etc/letsencrypt/:rw
+    command: certonly --webroot -w /var/www/certbot --force-renewal --email $WALL_APP_EMAIL -d $WALL_APP_DOMAIN -d $WALL_APP_API_DOMAIN --agree-tos
 
 volumes:
   wall-app-api_static_volume:

@@ -10,6 +10,7 @@ services:
       - "443:443"
     volumes:
       - ./nginx:/etc/nginx/conf.d
+      - ./nginx-variables/template.conf:/etc/nginx/templates/10-variables.conf.template:ro
       - ./certbot/www:/var/www/certbot/:ro
       - ./certbot/conf/:/etc/nginx/ssl/:ro
       - wall-app-api_static_volume:/var/www/static
@@ -23,6 +24,8 @@ services:
     volumes:
       - ./certbot/www/:/var/www/certbot/:rw
       - ./certbot/conf/:/etc/letsencrypt/:rw
+    depends_on:
+      - nginx
     command: certonly --webroot -w /var/www/certbot --force-renewal --email $WALL_APP_EMAIL -d $WALL_APP_DOMAIN -d $WALL_APP_API_DOMAIN --agree-tos
 
 volumes:
